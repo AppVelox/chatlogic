@@ -25,16 +25,19 @@ class Keyboard:
 
 
 class Message:
-    def __init__(self, text: str, keyboard: Keyboard, *args, **kwargs):
+    def __init__(self, text: str, keyboard: Keyboard = None, *args, **kwargs):
         if not isinstance(text, str):
             raise TypeError('text must be an instance of str')
-        if not isinstance(keyboard, Keyboard):
-            raise TypeError('keyboard must be an instance of Keyboard')
+        if keyboard is not None:
+            if not isinstance(keyboard, Keyboard):
+                raise TypeError('keyboard must be an instance of Keyboard')
         self.text = text
         self.keyboard = keyboard
 
     def to_dict(self):
-        return {
+        res = {
             'text': self.text,
-            'keyboard': self.keyboard.to_dict()
         }
+        if self.keyboard:
+            res['keyboard'] = self.keyboard.to_dict()
+        return res
